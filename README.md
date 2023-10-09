@@ -1,2 +1,2 @@
-# c-project
-记录一些我一路来做的一些c++项目
+# c++/qt remote Control system
+c++ qt 跨局域网远程控制系统
