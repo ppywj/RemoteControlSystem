@@ -19,11 +19,11 @@ using namespace std;
 int main()
 {
     int nRetCode = 0;
-
     HMODULE hModule = ::GetModuleHandle(nullptr);
 
     if (hModule != nullptr)
     {
+         //修改测试
         // 初始化 MFC 并在失败时显示错误
         if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0))
         {
