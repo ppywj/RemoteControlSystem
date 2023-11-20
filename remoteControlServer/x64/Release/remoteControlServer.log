@@ -1,0 +1,16 @@
+﻿  pch.cpp
+  CLockDlg.cpp
+  remoteControlServer.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\ServerSocket.h(12,1): warning C4267: “=”: 从“size_t”转换到“DWORD”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\ServerSocket.h(96,16): warning C4244: “=”: 从“const DWORD”转换到“WORD”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\ServerSocket.h(215,1): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\ServerSocket.h(239,1): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\remoteControlServer.cpp(253,28): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
+  ServerSocket.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\ServerSocket.h(12,1): warning C4267: “=”: 从“size_t”转换到“DWORD”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\ServerSocket.h(96,16): warning C4244: “=”: 从“const DWORD”转换到“WORD”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\ServerSocket.h(215,1): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\ServerSocket.h(239,1): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+  正在生成代码
+  已完成代码的生成
+  remoteControlServer.vcxproj -> E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlServer\x64\Release\remoteControlServer.exe

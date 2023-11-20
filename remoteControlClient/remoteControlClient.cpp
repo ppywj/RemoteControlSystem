@@ -5,8 +5,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "remoteControlClient.h"
-#include "remoteControlClientDlg.h"
-
+#include"Controller.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -25,7 +24,7 @@ CremoteControlClientApp::CremoteControlClientApp()
 {
 	// 支持重新启动管理器
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
-
+	
 	// TODO: 在此处添加构造代码，
 	// 将所有重要的初始化放置在 InitInstance 中
 }
@@ -43,6 +42,7 @@ BOOL CremoteControlClientApp::InitInstance()
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
 	//则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
+
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
 	// 将它设置为包括所有要在应用程序中使用的
@@ -70,10 +70,8 @@ BOOL CremoteControlClientApp::InitInstance()
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
-
-	CremoteControlClientDlg dlg;
-	m_pMainWnd = &dlg;
-	INT_PTR nResponse = dlg.DoModal();
+	CController*controller=CController::getInstance();
+	INT_PTR nResponse = controller->Invoke(m_pMainWnd);
 	if (nResponse == IDOK)
 	{
 		// TODO: 在此放置处理何时用

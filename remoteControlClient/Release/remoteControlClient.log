@@ -1,0 +1,172 @@
+﻿  ClientSocket.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(46,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(120,16): warning C4244: “=”: 从“const DWORD”转换到“WORD”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(192,33): error C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(294,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(294,1): message : 尝试匹配参数列表“(const _Elem *)”时
+          with
+          [
+              _Elem=char
+          ]
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(296,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(296,1): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(298,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(298,1): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.cpp(11,2): error C2664: “DWORD FormatMessageW(DWORD,LPCVOID,DWORD,DWORD,LPWSTR,DWORD,va_list *)”: 无法将参数 5 从“LPSTR”转换为“LPWSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.cpp(16,10): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winbase.h(2471,1): message : 参见“FormatMessageW”的声明
+  CScreenDialog.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(46,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(120,16): warning C4244: “=”: 从“const DWORD”转换到“WORD”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(192,33): error C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(294,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(294,1): message : 尝试匹配参数列表“(const _Elem *)”时
+          with
+          [
+              _Elem=char
+          ]
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(296,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(296,1): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(298,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(298,1): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\CScreenDialog.cpp(57,14): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\CScreenDialog.cpp(58,15): warning C4244: “初始化”: 从“int”转换到“float”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\CScreenDialog.cpp(61,8): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\CScreenDialog.cpp(62,8): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+  remoteControlClient.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(46,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(120,16): warning C4244: “=”: 从“const DWORD”转换到“WORD”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(192,33): error C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(294,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(294,1): message : 尝试匹配参数列表“(const _Elem *)”时
+          with
+          [
+              _Elem=char
+          ]
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(296,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(296,1): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(298,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(298,1): message : 尝试匹配参数列表“(const char [9])”时
+  remoteControlClientDlg.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(46,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(120,16): warning C4244: “=”: 从“const DWORD”转换到“WORD”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(192,33): error C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(294,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(294,1): message : 尝试匹配参数列表“(const _Elem *)”时
+          with
+          [
+              _Elem=char
+          ]
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(296,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(296,1): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(298,1): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(298,1): message : 尝试匹配参数列表“(const char [9])”时
+  The contents of <filesystem> are available only with C++17 or later.
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(202,33): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(202,33): message : 尝试匹配参数列表“(const char [11])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(206,49): error C2664: “bool CClientSocket::InitSocket(const std::string &)”: 无法将参数 1 从“const wchar_t *”转换为“const std::string &”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(206,49): message : 原因如下: 无法从“const wchar_t *”转换为“const std::string”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(206,49): message : 无构造函数可以接受源类型，或构造函数重载决策不明确
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(182,7): message : 参见“CClientSocket::InitSocket”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(209,31): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(209,31): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(212,31): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(212,31): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(244,63): error C2664: “HTREEITEM CTreeCtrl::InsertItem(LPCTSTR,HTREEITEM,HTREEITEM)”: 无法将参数 1 从“const _Elem *”转换为“LPCTSTR”
+          with
+          [
+              _Elem=char
+          ]
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(244,41): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxcmn.inl(270,37): message : 参见“CTreeCtrl::InsertItem”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(263,5): error C2664: “bool CClientSocket::InitSocket(const std::string &)”: 无法将参数 1 从“const wchar_t *”转换为“const std::string &”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(263,5): message : 原因如下: 无法从“const wchar_t *”转换为“const std::string”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(263,5): message : 无构造函数可以接受源类型，或构造函数重载决策不明确
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\ClientSocket.h(182,7): message : 参见“CClientSocket::InitSocket”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(294,56): error C2440: “类型强制转换”: 无法从“CString”转换为“LPCSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(294,41): message : 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(294,77): error C2664: “int CremoteControlClientDlg::sendCommandPacket(WORD,BYTE *,size_t)”: 无法将参数 2 从“int”转换为“BYTE *”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(294,75): message : 从整型强制转换为指针类型要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(258,30): message : 参见“CremoteControlClientDlg::sendCommandPacket”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(307,67): error C2664: “HTREEITEM CTreeCtrl::InsertItem(LPCTSTR,HTREEITEM,HTREEITEM)”: 无法将参数 1 从“char [256]”转换为“LPCTSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(307,30): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxcmn.inl(270,37): message : 参见“CTreeCtrl::InsertItem”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(310,51): error C2664: “int CListCtrl::InsertItem(int,LPCTSTR)”: 无法将参数 2 从“char [256]”转换为“LPCTSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(310,39): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxcmn.inl(164,31): message : 参见“CListCtrl::InsertItem”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(326,12): error C2440: “return”: 无法从“const char [1]”转换为“ATL::CStringT<wchar_t,StrTraitMFC<wchar_t,ATL::ChTraitsCRT<wchar_t>>>”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(326,12): message : class“ATL::CStringT<wchar_t,StrTraitMFC<wchar_t,ATL::ChTraitsCRT<wchar_t>>>”的构造函数声明为“explicit”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(364,56): error C2440: “类型强制转换”: 无法从“CString”转换为“LPCSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(364,41): message : 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(364,77): error C2664: “int CremoteControlClientDlg::sendCommandPacket(WORD,BYTE *,size_t)”: 无法将参数 2 从“int”转换为“BYTE *”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(364,75): message : 从整型强制转换为指针类型要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(258,30): message : 参见“CremoteControlClientDlg::sendCommandPacket”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(387,66): error C2664: “HTREEITEM CTreeCtrl::InsertItem(LPCTSTR,HTREEITEM,HTREEITEM)”: 无法将参数 1 从“char [256]”转换为“LPCTSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(387,29): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxcmn.inl(270,37): message : 参见“CTreeCtrl::InsertItem”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(390,45): error C2664: “int CListCtrl::InsertItem(int,LPCTSTR)”: 无法将参数 2 从“char [256]”转换为“LPCTSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(390,33): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxcmn.inl(164,31): message : 参见“CListCtrl::InsertItem”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(415,30): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(415,30): message : 尝试匹配参数列表“(const char [9])”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(495,93): error C2664: “CFileDialog::CFileDialog(BOOL,LPCTSTR,LPCTSTR,DWORD,LPCTSTR,CWnd *,DWORD,BOOL)”: 无法将参数 2 从“const char [2]”转换为“LPCTSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(495,28): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxdlgs.h(137,2): message : 参见“CFileDialog::CFileDialog”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(503,62): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(503,62): message : 尝试匹配参数列表“(const char [21], long)”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(512,92): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(512,92): message : 尝试匹配参数列表“(const char [41], long)”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(517,33): error C2664: “FILE *fopen(const char *,const char *)”: 无法将参数 1 从“CString”转换为“const char *”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(517,17): message : 没有可用于执行该转换的用户定义的转换运算符，或者无法调用该运算符
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\stdio.h(213,28): message : 参见“fopen”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(519,92): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(519,92): message : 尝试匹配参数列表“(const char [42], long)”时
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(526,74): error C2664: “void CWnd::SetWindowTextW(LPCTSTR)”: 无法将参数 1 从“const char [23]”转换为“LPCTSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(526,39): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(2319,7): message : 参见“CWnd::SetWindowTextW”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(535,43): error C2664: “int CWnd::MessageBoxW(LPCTSTR,LPCTSTR,UINT)”: 无法将参数 1 从“const char [13]”转换为“LPCTSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(535,16): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(2527,6): message : 参见“CWnd::MessageBoxW”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(548,63): error C2664: “int CWnd::MessageBoxW(LPCTSTR,LPCTSTR,UINT)”: 无法将参数 1 从“const char [27]”转换为“LPCTSTR”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(548,15): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(2527,6): message : 参见“CWnd::MessageBoxW”的声明
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\remoteControlClient\remoteControlClientDlg.cpp(586,7): error C2039: "LoadMenuA": 不是 "CMenu" 的成员
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(1135): message : 参见“CMenu”的声明
