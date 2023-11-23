@@ -5,6 +5,7 @@
 #include"CScreenDialog.h"
 #include"remoteControlClientDlg.h"
 #include"resource.h"
+#include"ClientSocket.h"
 #include<thread>
 #include<map>
 using std::thread;
@@ -20,13 +21,22 @@ class CController
 private:
 
 	static CController* m_instance;
-	CStatusDlg m_statusDlg;
-	CScreenDialog m_screenDlg;
-	CremoteControlClientDlg m_mainDlg;
+	
 	HANDLE m_thread;
 	unsigned int m_threadId;
 	map<int, MSGFUNC>m_msgFuncMap;
+	CString m_filePath;
 public:
+	CStatusDlg m_statusDlg;
+	CScreenDialog m_screenDlg;
+	CremoteControlClientDlg m_mainDlg;
+	//监控远程屏幕
+	void watchScreen(CController*controller);
+  //监控线程
+	static void watchThread(void* arg);
+	CImage screenImg;//截图的缓存
+	bool isImgValid;//缓存是否有效
+	bool ifWatchDlgClose = true;
 	//初始化操作
 	int InitController();
 	//启动
@@ -55,9 +65,29 @@ public:
 			delete m_instance;
 		m_instance = nullptr;
 	}
+	//发包
+	int sendCommandPacket(WORD cmd,BYTE*data=nullptr,size_t size=0);
+	//收包
+	int DealCommand();
+	//关闭连接
+	void closeConnect();
+	//拿到包
+	const CPacket& GetPacket();
+	//设置ip，port
+	void setIpAndPort(CString ip, short port=9527);
+	//初始化socket
+	int initSocket();
+	//加载目录
+	void loadDirectory(CString filePath, CListCtrl& file_list, CTreeCtrl&fileTree, HTREEITEM&hSelected);
+	//下载文件
+	void downLoadFile(CString filePath,CController*controller);
 private:
 	CController();
 	~CController();
+	void setFilePath(const CString& path);
+	const CString getFilePath();
+	//下载文件线程函数
+	static  void downLoadFileThread(void* arg);
 	CController& operator=(const CController client) {
 	}
 	struct MsgInfo {

@@ -50,15 +50,11 @@ public:
 	afx_msg void OnBnClickedButtonConnect();
 	afx_msg void OnEnChangeEditip();
 	afx_msg void OnBnClickedButtonFileinfo();
-	int sendCommandPacket(WORD nCmd, BYTE* pData = NULL, size_t length = 0);
 	afx_msg void OnNMDblclkTreeDir(NMHDR* pNMHDR, LRESULT* pResult);
 	CString getPath(HTREEITEM hTree);
 	void DeleteTreeChildrenItem(HTREEITEM hTree);//删除指定项的子项
-	void loadCurrentFile();//当删除之后重新加载当前文件
-	static void threadEntryForDownFile(void* arg);
 	static void threadEntryForWatchData(void* arg);
 	void threadWatchData();
-	void threadDownFile();
 	CListCtrl file_list;
 	// 目录树
 	CTreeCtrl fileTree;
@@ -69,4 +65,5 @@ public:
 	afx_msg void downLoadFile();
 	afx_msg void deleteFile();
 	afx_msg void OnBnClickedButtonWatch();
+	CString ip;
 };

@@ -106,7 +106,7 @@ int CCommandEx::MakeDirectoryInfo(list<CPacket>& packetList, CPacket& inPacket)
 		FILEINFO finfo;
 		finfo.IsDirectory = ((fdata.attrib & _A_SUBDIR) != 0);
 		memcpy(finfo.szFileName, fdata.name, strlen(fdata.name));
-		TRACE(finfo.szFileName, "\r\n");///输出文件名
+		//TRACE(finfo.szFileName, "\r\n");///输出文件名
 		CPacket pack = CPacket(2, (BYTE*)&finfo, sizeof(finfo));
 		packetList.push_back(pack);
 	} while (_findnext(hfind, &fdata) == 0);

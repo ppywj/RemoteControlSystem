@@ -25,4 +25,30 @@ unsigned int Utils::split(std::vector<std::string>& v,
     *it++ = s.substr(left);
     return i;
 }
+//返回1--内存不足
+//返回2--创建全局流对象失败
+//返回0--正常
+int Utils::GetImage(CImage& image, const std::string strBuffer)
+{
+    IStream* pStream = NULL;
+    BYTE* pData = (BYTE*)strBuffer.c_str();
+    HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, 0);
+    if (hMem == NULL)
+    {
+        TRACE("内存不足\r\n");
+        Sleep(1);
+        return 1;
+    }
+    HRESULT hRet = CreateStreamOnHGlobal(hMem, TRUE, &pStream);
+    if (hRet == S_OK) {
+        ULONG length = 0;
+        pStream->Write(pData, strBuffer.size(), &length);
+        image.Load(pStream);
+        return 0;
+    }
+    else
+    {
+        return 2;
+    }
+}
 

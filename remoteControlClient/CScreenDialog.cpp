@@ -6,7 +6,7 @@
 #include "CScreenDialog.h"
 #include "afxdialogex.h"
 #include"remoteControlClientDlg.h"
-
+#include"Controller.h"
 // CScreenDialog 对话框
 
 IMPLEMENT_DYNAMIC(CScreenDialog, CDialogEx)
@@ -41,6 +41,7 @@ BEGIN_MESSAGE_MAP(CScreenDialog, CDialogEx)
 	ON_WM_RBUTTONDBLCLK()
 	ON_WM_MOUSEMOVE()
 	ON_STN_CLICKED(IDC_SCREEN, &CScreenDialog::OnStnClickedScreen)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -79,17 +80,17 @@ void CScreenDialog::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	if (nIDEvent == 0)
 	{
-		CremoteControlClientDlg* pParent = (CremoteControlClientDlg*)GetParent();
-		if (pParent->isScreenValid())
+		CController* pController = CController::getInstance();
+		if (pController->isImgValid)
 		{
 			CRect rect;
 			screenEdit.GetWindowRect(rect);
 			//拿出屏幕数据并显示出来
 			//pParent->getScreenImg().BitBlt(screenEdit.GetDC()->GetSafeHdc(), 0, 0, SRCCOPY);
-			pParent->getScreenImg().StretchBlt(screenEdit.GetDC()->GetSafeHdc(), 0, 0, rect.Width(), rect.Height(), SRCCOPY);
-			pParent->InvalidateRect(NULL);//通知重绘
-			pParent->getScreenImg().Destroy();
-			pParent->updateImgScreenStatus();
+			pController->screenImg.StretchBlt(screenEdit.GetDC()->GetSafeHdc(), 0, 0, rect.Width(), rect.Height(), SRCCOPY);
+			pController->m_mainDlg.InvalidateRect(NULL);//通知重绘
+			pController->screenImg.Destroy();
+			pController->isImgValid = false;
 		}
 	}
 	CDialogEx::OnTimer(nIDEvent);
@@ -104,9 +105,7 @@ void CScreenDialog::OnLButtonDown(UINT nFlags, CPoint point)
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 2;//按下
-	CPacket pack(5, (BYTE*)&event, sizeof(event));
-	//这里可能有一个bug就是套接字可能是无效的
-	CClientSocket::getClientSocketInstance()->Send(pack);
+	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
@@ -120,9 +119,7 @@ void CScreenDialog::OnLButtonUp(UINT nFlags, CPoint point)
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 3;//双击
-	CPacket pack(5, (BYTE*)&event, sizeof(event));
-	//这里可能有一个bug就是套接字可能是无效的
-	CClientSocket::getClientSocketInstance()->Send(pack);
+	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
 
@@ -135,9 +132,7 @@ void CScreenDialog::OnRButtonDown(UINT nFlags, CPoint point)
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 2;//按下
-	CPacket pack(5, (BYTE*)&event, sizeof(event));
-	//这里可能有一个bug就是套接字可能是无效的
-	CClientSocket::getClientSocketInstance()->Send(pack);
+	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnRButtonDown(nFlags, point);
 }
 
@@ -150,24 +145,21 @@ void CScreenDialog::OnRButtonUp(UINT nFlags, CPoint point)
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 3;//弹起
-	CPacket pack(5, (BYTE*)&event, sizeof(event));
 	//这里可能有一个bug就是套接字可能是无效的
-	CClientSocket::getClientSocketInstance()->Send(pack);
+	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnRButtonUp(nFlags, point);
 }
 
 //双击左键
 void CScreenDialog::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	CPoint remotePoint = UserPointToScreenPoint(point);
 	MOUSEEV event;
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 1;//双击
 	//这里可能有一个bug就是套接字可能是无效的
-	CremoteControlClientDlg* pParent=(CremoteControlClientDlg*)GetParent();
-	pParent->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnLButtonDblClk(nFlags, point);
 }
 
@@ -180,9 +172,8 @@ void CScreenDialog::OnRButtonDblClk(UINT nFlags, CPoint point)
 	event.ptXY = remotePoint;
 	event.nButton = 2;//右键
 	event.nAction = 1;//双击
-	CPacket pack(5, (BYTE*)&event, sizeof(event));
 	//这里可能有一个bug就是套接字可能是无效的
-	CClientSocket::getClientSocketInstance()->Send(pack);
+	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnRButtonDblClk(nFlags, point);
 }
 
@@ -190,16 +181,14 @@ void CScreenDialog::OnRButtonDblClk(UINT nFlags, CPoint point)
 //鼠标移动
 void CScreenDialog::OnMouseMove(UINT nFlags, CPoint point)
 {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
-	//CPoint remotePoint = UserPointToScreenPoint(point);
-	//MOUSEEV event;
-	//event.ptXY = remotePoint;
-	//event.nButton = 8;
-	//event.nAction = 0;
-	//CPacket pack(5, (BYTE*)&event, sizeof(event));
-	////这里可能有一个bug就是套接字可能是无效的
-	//CClientSocket::getClientSocketInstance()->Send(pack);
-	//CDialogEx::OnMouseMove(nFlags, point);
+	CPoint remotePoint = UserPointToScreenPoint(point);
+	MOUSEEV event;
+	event.ptXY = remotePoint;
+	event.nButton = 8;
+	event.nAction = 0;
+	//这里可能有一个bug就是套接字可能是无效的
+	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	CDialogEx::OnMouseMove(nFlags, point);
 }
 
 //单击事件处理
@@ -213,7 +202,12 @@ void CScreenDialog::OnStnClickedScreen()
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 0;//单击
-	CPacket pack(5, (BYTE*)&event, sizeof(event));
-	//这里可能有一个bug就是套接字可能是无效的
-	CClientSocket::getClientSocketInstance()->Send(pack);
+	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+}
+
+
+void CScreenDialog::OnClose()
+{
+	CController::getInstance()->ifWatchDlgClose = true;
+	CDialogEx::OnClose();
 }

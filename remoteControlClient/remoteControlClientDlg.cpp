@@ -10,6 +10,7 @@
 #include "afxdialogex.h"
 #include "Utils.h"
 #include<filesystem>
+#include"Controller.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -55,8 +56,9 @@ END_MESSAGE_MAP()
 
 
 
-CremoteControlClientDlg::CremoteControlClientDlg(CWnd* pParent )//=nullptr)
+CremoteControlClientDlg::CremoteControlClientDlg(CWnd* pParent)//=nullptr)
 	: CDialogEx(IDD_REMOTECONTROLCLIENT_DIALOG, pParent)
+	, ip(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 }
@@ -67,6 +69,7 @@ void CremoteControlClientDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TREE_DIR, fileTree);
 	DDX_Control(pDX, IDC_EDIT_ip, ipEdit);
 	DDX_Control(pDX, IDC_LIST1, file_list);
+	DDX_Text(pDX, IDC_EDIT_ip, ip);
 }
 
 BEGIN_MESSAGE_MAP(CremoteControlClientDlg, CDialogEx)
@@ -118,8 +121,9 @@ BOOL CremoteControlClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	m_statusDlg.Create(IDD_DIALOG_STATUS, this);
-	m_statusDlg.ShowWindow(SW_HIDE);
+	//m_statusDlg.Create(IDD_DIALOG_STATUS, this);
+	//m_statusDlg.ShowWindow(SW_HIDE);
+	CController::getInstance()->InitController();
 	isImgValid = false;
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -195,49 +199,45 @@ void CremoteControlClientDlg::OnEnChangeEdit1()
 //点击连接按钮的响应函数
 void CremoteControlClientDlg::OnBnClickedButtonConnect()
 {
-	//首先获取输入的ip地址
-	CString strIP;
-	GetDlgItemText(IDC_EDIT_ip, strIP);
-	if (strIP.IsEmpty())
+	UpdateData();
+	if (ip.IsEmpty())
 	{
 		AfxMessageBox("ip不能为空");
 		return;
 	}
-	CClientSocket* pClient = CClientSocket::getClientSocketInstance();
-	int ret = pClient->InitSocket(strIP.GetString());
+	CController* pController = CController::getInstance();
+	pController->setIpAndPort(ip);
+	int ret = pController->initSocket();
 	if (!ret)
 	{
 		AfxMessageBox("连接失败");
 	}
 	else
 		AfxMessageBox("连接成功");
-	//发送测试
-	pClient->SCTest();
+
 }
 
 
 void CremoteControlClientDlg::OnEnChangeEditip()
 {
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
-
-	// TODO:  在此添加控件通知处理程序代码
+	UpdateData();
+	CController* pController = CController::getInstance();
+	pController->setIpAndPort(ip);
 }
 
 //查看文件信息按钮 点击响应函数
 //获取被控制端的磁盘分区信息
 void CremoteControlClientDlg::OnBnClickedButtonFileinfo()
 {
-	if (sendCommandPacket(1) != 0)
+	CController* pController = CController::getInstance();
+	if (pController->sendCommandPacket(1) != 1)
 		return;
-	CClientSocket* pClient = CClientSocket::getClientSocketInstance();
-	int ret = pClient->DealCommand();
-	pClient->close();
+	int ret = pController->DealCommand();
+	pController->closeConnect();
 	if (ret != -1)
 	{
-		std::string dirStr = pClient->GetPacket().strData;
+		fileTree.DeleteAllItems();
+		std::string dirStr = pController->GetPacket().strData;
 		std::vector<std::string>dirs;
 		Utils::split(dirs, dirStr, ',');
 		for (std::string dir : dirs)
@@ -245,7 +245,7 @@ void CremoteControlClientDlg::OnBnClickedButtonFileinfo()
 			fileTree.InsertItem((dir + ":").c_str(), TVI_ROOT, TVI_LAST);
 		}
 	}
-	pClient->close();
+	pController->closeConnect();
 }
 // 1、查看磁盘分区
 // 2、查看指定目录下的文件
@@ -256,68 +256,26 @@ void CremoteControlClientDlg::OnBnClickedButtonFileinfo()
 // 7、锁机
 // 8、解锁
 //向被控制端发包
-int CremoteControlClientDlg::sendCommandPacket(WORD nCmd, BYTE* pData, size_t length)
-{
-	CClientSocket* pClient = CClientSocket::getClientSocketInstance();
-	CString strIP;
-	GetDlgItemText(IDC_EDIT_ip, strIP);
-	if (pClient->InitSocket(strIP.GetString()) == false)
-		return -1;
-	if (pClient->Send(CPacket(nCmd, pData, length)) == false)
-		return -1;
-	return 0;
-}
-
 
 
 
 //双击文件树中的项
 void CremoteControlClientDlg::OnNMDblclkTreeDir(NMHDR* pNMHDR, LRESULT* pResult)
 {
+	CController* pController = CController::getInstance();
 	//清空文件列表
 	file_list.DeleteAllItems();
-	//CPoint ptMouse;
-	//GetCursorPos(&ptMouse);
-	//fileTree.ScreenToClient(&ptMouse);
-	//HTREEITEM hTreeSelected1 = fileTree.HitTest(ptMouse, 0);
 	HTREEITEM hTreeSelected = fileTree.GetSelectedItem();
 	//这两个是一样的
-
 	if (hTreeSelected == NULL)
 	{
 		return;
 	}
 	//如果是文件 不是目录那么直接return掉
-
+	
 	//删除之前插入的相当于做一个更新
 	DeleteTreeChildrenItem(hTreeSelected);
-	CString strPath = getPath(hTreeSelected);
-	int nCmd = sendCommandPacket(2, (BYTE*)(LPCSTR)strPath, strPath.GetLength());
-	CClientSocket* client = CClientSocket::getClientSocketInstance();
-	while (client->DealCommand() != 2)
-	{
-	}
-
-	int index = 0;
-	PFILEINFO pInfo = (PFILEINFO)(client->GetPacket().strData.c_str());
-	while (pInfo->HasNext) {
-		if (pInfo->IsDirectory) {
-			//中文乱码 因为第一个参数是LPCSTR的
-			//InserItem使用的是Unicode编码
-			if (!(CString(pInfo->szFileName) == "." || CString(pInfo->szFileName) == ".."))
-				fileTree.InsertItem(pInfo->szFileName, hTreeSelected, TVI_LAST);
-		}
-		else {
-			file_list.InsertItem(index++, pInfo->szFileName);
-
-		}
-		int cmd = client->DealCommand();
-		if (cmd < 0)
-			break;
-		pInfo = (PFILEINFO)(client->GetPacket().strData.c_str());
-		//TRACE("fileName:%s\r\n", pInfo->szFileName);
-	}
-	client->close();
+	pController->loadDirectory(getPath(hTreeSelected), file_list, fileTree, hTreeSelected);
 }
 
 //获取完整路径
@@ -345,68 +303,14 @@ void CremoteControlClientDlg::DeleteTreeChildrenItem(HTREEITEM hTree)
 	} while (hSub != NULL);
 }
 
-void CremoteControlClientDlg::loadCurrentFile()
-{
-	HTREEITEM hSelected = fileTree.GetSelectedItem();
-	CString dirPath = getPath(hSelected);
-	file_list.DeleteAllItems();
-	HTREEITEM hTreeSelected = fileTree.GetSelectedItem();
-	//这两个是一样的
 
-	if (hTreeSelected == NULL)
-	{
-		return;
-	}
-	//如果是文件 不是目录那么直接return掉
-
-	//删除之前插入的相当于做一个更新
-	DeleteTreeChildrenItem(hTreeSelected);
-	CString strPath = getPath(hTreeSelected);
-	int nCmd = sendCommandPacket(2, (BYTE*)(LPCSTR)strPath, strPath.GetLength());
-	CClientSocket* client = CClientSocket::getClientSocketInstance();
-	while (client->DealCommand() != 2)
-	{
-	}
-
-	PFILEINFO pInfo = (PFILEINFO)(client->GetPacket().strData.c_str());
-	while (pInfo->HasNext) {
-		if (pInfo->IsDirectory)
-		{
-			if (CString(pInfo->szFileName) == "." || CString(pInfo->szFileName) == "..")
-			{
-				//.表示当前目录  .. 表示上一级目录 如果将这两个添加进来就会套娃
-				int cmd = client->DealCommand();
-				if (cmd < 0)
-				{
-					break;
-				}
-				pInfo = (PFILEINFO)(client->GetPacket().strData.c_str());
-				continue;
-			}
-		}
-		if (pInfo->IsDirectory) {
-			fileTree.InsertItem(pInfo->szFileName, hTreeSelected, TVI_LAST);
-		}
-		else {
-			file_list.InsertItem(0, pInfo->szFileName);
-		}
-
-		int cmd = client->DealCommand();
-		if (cmd < 0)
-			break;
-		pInfo = (PFILEINFO)(client->GetPacket().strData.c_str());
-	}
-	client->close();
-
-}
-
-//文件传输的提示线程
-void CremoteControlClientDlg::threadEntryForDownFile(void* arg)
-{
-	CremoteControlClientDlg* thiz = (CremoteControlClientDlg*)arg;
-	thiz->threadDownFile();
-	_endthread();
-}
+////文件传输的提示线程
+//void CremoteControlClientDlg::threadEntryForDownFile(void* arg)
+//{
+//	CremoteControlClientDlg* thiz = (CremoteControlClientDlg*)arg;
+//	thiz->threadDownFile();
+//	_endthread();
+//}
 
 void CremoteControlClientDlg::threadEntryForWatchData(void* arg)
 {
@@ -419,6 +323,7 @@ void CremoteControlClientDlg::threadEntryForWatchData(void* arg)
 
 void CremoteControlClientDlg::threadWatchData()
 {
+	CController* pController = CController::getInstance();
 	Sleep(50);
 	CClientSocket* pClient = NULL;
 	do {
@@ -433,137 +338,30 @@ void CremoteControlClientDlg::threadWatchData()
 			updateImgScreenStatus();
 			break;
 		}
-		if (!isImgValid) 
+		if (!isImgValid)
 		{
-			int ret = sendCommandPacket(6);
+			int ret = pController->sendCommandPacket(6);
 			if (ret == 0)
 			{
 				int cmd = pClient->DealCommand();
 				if (cmd == 6)
 				{
 					TRACE("接收到一张屏幕截图\r\n");
-
-					//TODO:存入screenImg
-					IStream* pStream = NULL;
-					BYTE* pData = (BYTE*)pClient->GetPacket().strData.c_str();
-					HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, 0);
-					if (hMem == NULL)
-					{
-						TRACE("内存不足\r\n");
-						Sleep(1);
-						continue;
-					}
-					HRESULT hRet = CreateStreamOnHGlobal(hMem, TRUE, &pStream);
-					if (hRet == S_OK) {
-						ULONG length = 0;
-						pStream->Write(pData, (pClient->GetPacket().strData.size()), &length);
-						screenImg.Load(pStream);
+					std::string strBuffer = pClient->GetPacket().strData;
+					if (Utils::GetImage(screenImg, strBuffer) == 0)
 						isImgValid = true;
-					}
-					else {
+					else
 						continue;
-					}
 				}
 
 			}
 			pClient->close();
 			Sleep(20);
-
 		}
 		else
 		{
 			Sleep(1);
 		}
-
-	}
-
-}
-
-//文件传输的线程函数
-void CremoteControlClientDlg::threadDownFile()
-{
-	bool isClose = false;
-	//首先获取文件路径
-	int nListSelected = file_list.GetSelectionMark();
-	CString FileName = file_list.GetItemText(nListSelected, 0);
-	HTREEITEM hSelected = fileTree.GetSelectedItem();
-	CString dirPath = getPath(hSelected);
-	CString filePath = dirPath + FileName;
-	FILE* pFile = nullptr;
-	CString localPath;
-	CClientSocket* pClient = CClientSocket::getClientSocketInstance();
-	//弹出文件对话框    隐藏只读属性的文件 和如果文件重名弹出覆盖提示框
-	CFileDialog fileDlg(TRUE, "*", FileName, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL, this);
-	//模态方式弹出文件对话框
-	if (fileDlg.DoModal() == IDOK)
-	{
-		int ret = sendCommandPacket(4, (BYTE*)filePath.GetString(), filePath.GetLength());
-		TRACE("\r\n下载:%s\r\n", filePath);
-		if (ret < 0)
-		{
-			AfxMessageBox("文件下载命令执行失败", MB_TOPMOST);
-			pClient->close();
-			return;
-		}
-		while (pClient->DealCommand() != 4) {}
-		//获取长度
-		long long fileSize = *(long long*)(pClient->GetPacket().strData.c_str());
-		if (fileSize == 0)
-		{
-			AfxMessageBox("文件为空或由于权限不足等原因无法读取文件", MB_TOPMOST);
-			pClient->close();
-			return;
-		}
-		localPath = fileDlg.GetPathName();
-		pFile = fopen(localPath, "wb+");
-		if (pFile == NULL) {
-			AfxMessageBox("本地没有权限保存该文件或者文件无法创建!!!", MB_TOPMOST);
-			pClient->close();
-			//这里有待优化 应该向服务端发送一个命令通知服务端不用发送文件数据了
-			return;
-		}
-		long long loadedSize = 0;//下载完成的大小
-		BeginWaitCursor();
-		m_statusDlg.info_edit.SetWindowText("文件下载命令正在执行中");
-		m_statusDlg.ShowWindow(SW_SHOW);
-		m_statusDlg.CenterWindow(this);
-		m_statusDlg.SetActiveWindow();
-		while (loadedSize < fileSize)
-		{
-			int ret = pClient->DealCommand();
-			if (ret < 0)
-			{
-				MessageBox("文件下载错误", MB_OK);
-				fclose(pFile);
-				pClient->close();
-				return;
-			}
-			fwrite((pClient->GetPacket().strData.c_str()), 1, (pClient->GetPacket().strData.size()), pFile);
-			loadedSize += pClient->GetPacket().strData.size();
-		}
-		if (loadedSize < fileSize)
-		{
-			isClose = true;
-			EndWaitCursor();
-			m_statusDlg.ShowWindow(SW_HIDE);
-			MessageBox("文件下载未完成，请检查错误", MB_OK);
-		}
-		else
-		{
-			isClose = true;
-			EndWaitCursor();
-			m_statusDlg.ShowWindow(SW_HIDE);
-			// 获取当前活动窗口的句柄
-			MessageBox(FileName + "下载完成+储存在:" + localPath, MB_OK);
-		}
-
-	}
-	if (pFile != NULL)
-		fclose(pFile);
-	pClient->close();
-	if (!isClose) {
-		EndWaitCursor();
-		m_statusDlg.ShowWindow(SW_HIDE);
 	}
 }
 
@@ -597,6 +395,7 @@ void CremoteControlClientDlg::OnNMRClickListFile(NMHDR* pNMHDR, LRESULT* pResult
 //打开文件
 void CremoteControlClientDlg::openFile()
 {
+	CController* pController = CController::getInstance();
 	//首先获取文件路径
 	int nListSelected = file_list.GetSelectionMark();
 	CString FileName = file_list.GetItemText(nListSelected, 0);
@@ -604,8 +403,8 @@ void CremoteControlClientDlg::openFile()
 	CString dirPath = getPath(hSelected);
 	CString filePath = dirPath + FileName;
 	//发送打开文件命令
-	sendCommandPacket(3, (BYTE*)filePath.GetString(), filePath.GetLength());
-	CClientSocket::getClientSocketInstance()->close();
+	pController->sendCommandPacket(3, (BYTE*)filePath.GetString(), filePath.GetLength());
+	pController->closeConnect();
 }
 
 
@@ -613,7 +412,15 @@ void CremoteControlClientDlg::openFile()
 //下载文件
 void CremoteControlClientDlg::downLoadFile()
 {
-	_beginthread(CremoteControlClientDlg::threadEntryForDownFile, 0, this);
+	CController* pController = CController::getInstance();
+	bool isClose = false;
+	//首先获取文件路径
+	int nListSelected = file_list.GetSelectionMark();
+	CString FileName = file_list.GetItemText(nListSelected, 0);
+	HTREEITEM hSelected = fileTree.GetSelectedItem();
+	CString dirPath = getPath(hSelected);
+	CString filePath = dirPath + FileName;
+	pController->downLoadFile(filePath,pController);
 	Sleep(50);//保证线程正常启动之不改动界面
 
 }
@@ -625,6 +432,7 @@ void CremoteControlClientDlg::downLoadFile()
 //删除文件
 void CremoteControlClientDlg::deleteFile()
 {
+	CController* pController = CController::getInstance();
 	//首先获取文件路径
 	int nListSelected = file_list.GetSelectionMark();
 	CString FileName = file_list.GetItemText(nListSelected, 0);
@@ -632,21 +440,31 @@ void CremoteControlClientDlg::deleteFile()
 	CString dirPath = getPath(hSelected);
 	CString filePath = dirPath + FileName;
 	//发送删除文件命令
-	sendCommandPacket(9, (BYTE*)filePath.GetString(), filePath.GetLength());
-	CClientSocket* pClient = CClientSocket::getClientSocketInstance();
-	loadCurrentFile();
+	pController->sendCommandPacket(9, (BYTE*)filePath.GetString(), filePath.GetLength());
+	pController->closeConnect();
+	file_list.DeleteAllItems();
+	HTREEITEM hTreeSelected = fileTree.GetSelectedItem();
+	//这两个是一样的
+
+	if (hTreeSelected == NULL)
+	{
+		return;
+	}
+	//如果是文件 不是目录那么直接return掉
+
+	//删除之前插入的相当于做一个更新
+	DeleteTreeChildrenItem(hTreeSelected);
+	CString strPath = getPath(hTreeSelected);
+	pController->loadDirectory(dirPath, file_list, fileTree, hTreeSelected);
 }
 
 
 //监控按钮的点击响应函数
 void CremoteControlClientDlg::OnBnClickedButtonWatch()
 {
-	//弹出监控对话框
-	CScreenDialog dlg(this);
-	CClientSocket::getClientSocketInstance()->updateIfWathClose(false);
-	//开启接受解析截屏数据的线程
-	_beginthread(threadEntryForWatchData, 0, this);
-	dlg.DoModal();
+	CController* pController = CController::getInstance();
+	pController->watchScreen(pController);
 }
+
 
 

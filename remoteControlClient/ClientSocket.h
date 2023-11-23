@@ -129,7 +129,7 @@ public:
 	{
 		return nLength + 2 + sizeof(DWORD);
 	}
-	 const char* data()
+	const char* data()
 	{
 		completeData.resize(nLength + 2 + sizeof(DWORD));
 		BYTE* pData = (BYTE*)completeData.c_str();
@@ -179,7 +179,7 @@ public:
 		}
 		return m_clientSocket;
 	}
-	bool InitSocket(const std::string& SERVERIP)
+	bool InitSocket()
 	{
 		if (client_socket == INVALID_SOCKET)
 			closesocket(client_socket);
@@ -189,8 +189,8 @@ public:
 		sockaddr_in server_addr;
 		memset(&server_addr, 0, sizeof(server_addr));
 		server_addr.sin_family = AF_INET;
-		server_addr.sin_addr.s_addr = inet_addr(SERVERIP.c_str());
-		server_addr.sin_port = 8888;
+		server_addr.sin_addr.s_addr = inet_addr(m_ip.GetString());
+		server_addr.sin_port = 9527;
 		int res = connect(client_socket, (sockaddr*)&server_addr, sizeof(server_addr));
 		if (res == -1)
 		{
@@ -209,26 +209,32 @@ public:
 		client_socket = -1;
 	}
 
-	int DealCommand() {
+	int DealCommand(bool ifrecv = true) {
+		static size_t index = 0;
 		if (client_socket == -1 || client_socket == INVALID_SOCKET)
 		{
 			return -1;
 		}
 		char* buffer = m_buffer.data();
 
-		static size_t index = 0;
+
 		while (true)
 		{
 			//读取到缓冲去的空位置
-			size_t len = recv(client_socket, buffer + index, BUF_SIZE - index, 0);
-			if( (len <= 0)&&index==0)
-				return -1;
+			size_t len = 0;
+			if (ifrecv) {
+				len = recv(client_socket, buffer + index, BUF_SIZE - index, 0);
+				if ((len <= 0) && index == 0)
+					return -1;
+			}
 			index += len;
 			len = index;
+			TRACE("%d\r\n", index);
 			//解析来自服务端的目录数据
 			packet = CPacket((BYTE*)buffer, len);
 			if (len > 0)
 			{
+				TRACE("index=%d,len=%d\r\n", index, len);
 				index -= len;
 				//把后面未读的数据移动到缓冲区最前面
 				memmove(buffer, buffer + len, BUF_SIZE - len);
@@ -249,13 +255,8 @@ public:
 		}
 		return send(client_socket, pData, nSize, 0) > 0;
 	}
-	void testPacket(const char* pData)
-	{
-		//读取包头
 
-	}
-
-	bool Send( CPacket& packet)
+	bool Send(CPacket& packet)
 	{
 		if (client_socket == -1 || client_socket == INVALID_SOCKET)
 		{
@@ -285,18 +286,7 @@ public:
 		}
 		return false;
 	}
-	void SCTest()//发送连接测试
-	{
-		BYTE* pstr = (BYTE*)"你好服务器";
-		int len = strlen((const char*)pstr);
-		// 初始化一个足够大的字节数
-		CPacket pack(1008, pstr, len); // 确保使用正确的字符串长度
-		AfxMessageBox(pack.strData.c_str());
-		if (getClientSocketInstance()->Send(pack))
-			AfxMessageBox("发送成功");
-		else
-			AfxMessageBox("发送失败");
-	}
+	
 	bool ifWathClose()
 	{
 		return ifWathDlgClose;
@@ -305,13 +295,18 @@ public:
 	{
 		ifWathDlgClose = status;
 	}
-
+	void setIpAndPort(CString IP, short PORT=9527) {
+		m_ip = IP;
+		m_port = PORT;
+	}
 private:
-	bool ifWathDlgClose=true;//监视窗口是否关闭了
+	bool ifWathDlgClose = true;//监视窗口是否关闭了
 	std::vector<char>m_buffer;
 	CPacket packet;
 	SOCKET client_socket;
 	static CClientSocket* m_clientSocket;
+	CString m_ip;
+	short m_port;
 	CClientSocket()
 	{
 		client_socket = INVALID_SOCKET;

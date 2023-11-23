@@ -71,6 +71,7 @@ BOOL CremoteControlClientApp::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 	CController*controller=CController::getInstance();
+
 	INT_PTR nResponse = controller->Invoke(m_pMainWnd);
 	if (nResponse == IDOK)
 	{

@@ -3,13 +3,14 @@
 #include"framework.h"
 #include"CPacket.h"
 #include<list>
+#include<thread>
 using std::list;
 #define BUF_SIZE 4096
 class CServerSocket
 {
 public:
-	typedef int (*SOCKET_CALLBACK)(void*arg,int cmd,list<CPacket>& packetList, CPacket& inPacket);
-	int run(SOCKET_CALLBACK call_back,void*arg,short port=9527) {
+	typedef int (*SOCKET_CALLBACK)(void* arg, int cmd, list<CPacket>& packetList, CPacket& inPacket);
+	int run(SOCKET_CALLBACK call_back, void* arg, short port = 9527) {
 		m_arg = arg;
 		m_callback = call_back;
 		if (!InitSocketEnv())
@@ -20,12 +21,18 @@ public:
 		{
 			if (!AcceptClient())
 				continue;
-			int ret=DealCommand();
+			int ret = DealCommand();
 			if (ret == 0)
 			{
 				m_callback(m_arg, packet.sCmd, m_packetList, packet);
+				while (m_packetList.size()>0)
+				{
+					Send(m_packetList.front());
+					m_packetList.pop_front();
+					Sleep(1);
+				}
 			}
-			
+
 		}
 		return 0;
 	}
@@ -104,7 +111,7 @@ public:
 	{
 		if (client_socket == -1)
 			return false;
-		return send(client_socket, packet.data(), packet.nLength + sizeof(DWORD)+2, 0);
+		return send(client_socket, packet.data(), packet.nLength + sizeof(DWORD) + 2, 0);
 	}
 	//获取文件路径
 	bool getFilePath(std::string& pathStr)

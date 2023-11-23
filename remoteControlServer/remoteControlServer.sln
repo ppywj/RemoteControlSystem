@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "remoteControlServer", "remo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "remoteControlClient", "..\remoteControlClient\remoteControlClient.vcxproj", "{36B71454-6406-4B0C-9FB2-216BA9029054}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "..\Setup1\Setup1.vdproj", "{B3348704-1803-4F15-AAC8-43200CA821C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,10 @@ Global
 		{36B71454-6406-4B0C-9FB2-216BA9029054}.Release|x64.Build.0 = Release|x64
 		{36B71454-6406-4B0C-9FB2-216BA9029054}.Release|x86.ActiveCfg = Release|Win32
 		{36B71454-6406-4B0C-9FB2-216BA9029054}.Release|x86.Build.0 = Release|Win32
+		{B3348704-1803-4F15-AAC8-43200CA821C6}.Debug|x64.ActiveCfg = Debug
+		{B3348704-1803-4F15-AAC8-43200CA821C6}.Debug|x86.ActiveCfg = Debug
+		{B3348704-1803-4F15-AAC8-43200CA821C6}.Release|x64.ActiveCfg = Release
+		{B3348704-1803-4F15-AAC8-43200CA821C6}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
