@@ -186,6 +186,7 @@
   <ItemGroup>
     <ClInclude Include="ClientSocket.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="CPacket.h" />
     <ClInclude Include="CScreenDialog.h" />
     <ClInclude Include="CStatusDlg.h" />
     <ClInclude Include="framework.h" />

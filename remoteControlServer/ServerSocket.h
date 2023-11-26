@@ -19,8 +19,11 @@ public:
 			return 2;
 		for (;;)
 		{
+			TRACE("循环一次\r\n");
 			if (!AcceptClient())
 				continue;
+
+			//TRACE("接受了一次请求\r\n");
 			int ret = DealCommand();
 			if (ret == 0)
 			{
@@ -29,8 +32,8 @@ public:
 				{
 					Send(m_packetList.front());
 					m_packetList.pop_front();
-					Sleep(1);
 				}
+				closeClient();
 			}
 
 		}
@@ -67,7 +70,7 @@ public:
 		client_socket = accept(server_socket, (sockaddr*)&client_addr, &clientAddr_sz);
 		if (client_socket == -1)
 			return false;
-		//TRACE(_T("一个客户端连接到服务器"));
+		TRACE("一个客户端连接到服务器\r\n");
 		return true;
 	}
 	CPacket& GetPacket()
@@ -77,21 +80,16 @@ public:
 	int DealCommand() {
 		char buffer[BUF_SIZE];
 		memset(buffer, 0, BUF_SIZE);
-		size_t index = 0;
 		while (true)
 		{
 			//读取到缓冲去的空位置
-			size_t len = recv(client_socket, buffer + index, BUF_SIZE - index, 0);
-			if (len <= 0)
-				return -1;
-			index += len;
-			len = index;
-			packet = CPacket((BYTE*)buffer, len);
-			if (len >= 0)
+			int len = recv(client_socket, buffer, BUF_SIZE, 0);
+			if (len >0)
 			{
-				index -= len;
-				//把后面未读的数据移动到缓冲区最前面
-				memmove(buffer, buffer + len, BUF_SIZE - len);
+				size_t size = len;
+				packet = CPacket((BYTE*)buffer, size);
+				TRACE("请求类型为:%d,size:%d\r\n", packet.sCmd,size);
+				//TRACE("服务端接收到一个数据包，请求类型为: % d, 长度 : % d\r\n", packet.sCmd, len);
 				return 0;
 			}
 			else

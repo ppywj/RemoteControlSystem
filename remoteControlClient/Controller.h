@@ -17,7 +17,7 @@ using std::map;
 #define WM_SEND_MESSAGE (WM_USER+0x1000) //发送线程消息
 class CController
 {
-	typedef LRESULT(CController::* MSGFUNC)(UINT, WPARAM, LPARAM);
+	typedef void(CController::* MSGFUNC)(UINT, WPARAM, LPARAM);
 private:
 
 	static CController* m_instance;
@@ -42,10 +42,10 @@ public:
 	//启动
 	int Invoke(CWnd*& pMainWnd);
 	//消息相应函数
-	LRESULT OnSendPack(UINT nMsg, WPARAM wParam, LPARAM  lParam);
-	LRESULT OnSendData(UINT nMsg, WPARAM wParam, LPARAM  lParam);
-	LRESULT OnShowStatus(UINT nMsg, WPARAM wParam, LPARAM  lParam);
-	LRESULT OnWatchScreen(UINT nMsg, WPARAM wParam, LPARAM  lParam);
+	void OnSendPack(UINT nMsg, WPARAM wParam, LPARAM  lParam);
+	void OnSendData(UINT nMsg, WPARAM wParam, LPARAM  lParam);
+	void OnShowStatus(UINT nMsg, WPARAM wParam, LPARAM  lParam);
+	void OnWatchScreen(UINT nMsg, WPARAM wParam, LPARAM  lParam);
 	//线程如入口函数
 	static unsigned __stdcall threadEntry(void* arg);
 	//线程处理函数
@@ -66,9 +66,9 @@ public:
 		m_instance = nullptr;
 	}
 	//发包
-	int sendCommandPacket(WORD cmd,BYTE*data=nullptr,size_t size=0);
+	int sendCommandPacket(bool ifrecv,std::list<CPacket>& resultPackList,WORD cmd, BYTE* data = nullptr, size_t size = 0,bool ifMutiple = false);
 	//收包
-	int DealCommand();
+	//int DealCommand();
 	//关闭连接
 	void closeConnect();
 	//拿到包
@@ -82,6 +82,7 @@ public:
 	//下载文件
 	void downLoadFile(CString filePath,CController*controller);
 private:
+	bool ifStartSendAndRcvThread = false;
 	CController();
 	~CController();
 	void setFilePath(const CString& path);

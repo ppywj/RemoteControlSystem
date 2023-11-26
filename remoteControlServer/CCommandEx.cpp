@@ -125,8 +125,6 @@ int CCommandEx::RunFile(list<CPacket>& packetList, CPacket& inPacket)
 {
 	std::string filePath = inPacket.getStrData();
 	ShellExecuteA(NULL, NULL, filePath.c_str(), NULL, NULL, SW_SHOWNORMAL);
-	CPacket pack(3, NULL, 0);
-	packetList.push_back(pack);
 	return 0;
 }
 
@@ -386,6 +384,6 @@ int CCommandEx::sendScreen(list<CPacket>& packetList, CPacket& inPacket)
 	pStream->Release();
 	GlobalFree(hMem);
 	screen.ReleaseDC();
-	TRACE("send:发送了一张屏幕截图,length=%d,包大小:%d\r\n", pack.nLength, sizeof(pack));
+	//TRACE("send:发送了一张屏幕截图,length=%d,包大小:%d\r\n", pack.nLength, sizeof(pack));
 	return 0;
 }

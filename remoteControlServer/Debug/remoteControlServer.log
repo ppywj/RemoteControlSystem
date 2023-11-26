@@ -1,0 +1,23 @@
+﻿  pch.cpp
+  CCommandEx.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\CPacket.h(21,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\CCommandEx.cpp(112,21): warning C4244: “参数”: 从“__int64”转换到“intptr_t”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\CCommandEx.cpp(263,28): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\CCommandEx.cpp(321,58): error C2664: “BOOL DeleteFileW(LPCWSTR)”: 无法将参数 1 从“const _Elem *”转换为“LPCWSTR”
+          with
+          [
+              _Elem=char
+          ]
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\CCommandEx.cpp(321,56): message : 与指向的类型无关；强制转换要求 reinterpret_cast、C 样式强制转换或函数样式强制转换
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\fileapi.h(146,1): message : 参见“DeleteFileW”的声明
+  CLockDlg.cpp
+  CRemoteControlServerUtil.cpp
+  remoteControlServer.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\CPacket.h(21,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\remoteControlServer.cpp(36,58): error C2665: “AfxMessageBox”: 2 个重载中没有一个可以转换所有参数类型
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6549,12): message : 可能是“int AfxMessageBox(UINT,UINT,UINT)”
+D:\software\vs2019\VC\Tools\MSVC\14.29.30133\atlmfc\include\afxwin.h(6547,12): message : 或    “int AfxMessageBox(LPCTSTR,UINT,UINT)”
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\remoteControlServer.cpp(36,58): message : 尝试匹配参数列表“(const char [26])”时
+  ServerSocket.cpp
+E:\cppProject\RemoteControlSystem_git\RemoteControlSystem\RemoteControlSystem\RemoteControlSystem\remoteControlServer\CPacket.h(21,21): warning C4018: “<”: 有符号/无符号不匹配
+  正在生成代码...

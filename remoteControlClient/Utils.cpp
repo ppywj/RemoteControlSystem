@@ -46,6 +46,7 @@ int Utils::GetImage(CImage& image, const std::string strBuffer)
         image.Load(pStream);
         return 0;
     }
+
     else
     {
         return 2;

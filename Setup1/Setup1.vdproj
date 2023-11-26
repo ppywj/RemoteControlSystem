@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_3D39A05FD31F48D2AAE9207B95BECC80"
+        "MsmKey" = "8:_DFC73C0BE84C4486BFDB69FA44CF528E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -37,6 +37,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -53,6 +61,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -650,9 +666,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3D39A05FD31F48D2AAE9207B95BECC80"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DFC73C0BE84C4486BFDB69FA44CF528E"
             {
-            "SourcePath" = "8:..\\remoteControlServer\\x64\\Debug\\remoteControlServer.exe"
+            "SourcePath" = "8:..\\remoteControlServer\\x64\\Release\\remoteControlServer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C21B61C3B2CB4C65AFE4BB0A66510EC4"

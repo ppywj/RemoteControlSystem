@@ -94,9 +94,6 @@ END_MESSAGE_MAP()
 BOOL CremoteControlClientDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	// 将“关于...”菜单项添加到系统菜单中。
-
 	// IDM_ABOUTBOX 必须在系统命令范围内。
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
@@ -120,9 +117,6 @@ BOOL CremoteControlClientDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	// TODO: 在此添加额外的初始化代码
-	//m_statusDlg.Create(IDD_DIALOG_STATUS, this);
-	//m_statusDlg.ShowWindow(SW_HIDE);
 	CController::getInstance()->InitController();
 	isImgValid = false;
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -230,14 +224,14 @@ void CremoteControlClientDlg::OnEnChangeEditip()
 void CremoteControlClientDlg::OnBnClickedButtonFileinfo()
 {
 	CController* pController = CController::getInstance();
-	if (pController->sendCommandPacket(1) != 1)
+	std::list<CPacket>resultPacketList;
+	if (!pController->sendCommandPacket(true,resultPacketList,1))
 		return;
-	int ret = pController->DealCommand();
-	pController->closeConnect();
-	if (ret != -1)
+	if (resultPacketList.size()>0)
 	{
 		fileTree.DeleteAllItems();
-		std::string dirStr = pController->GetPacket().strData;
+		file_list.DeleteAllItems();
+		std::string dirStr = resultPacketList.front().strData;
 		std::vector<std::string>dirs;
 		Utils::split(dirs, dirStr, ',');
 		for (std::string dir : dirs)
@@ -245,17 +239,7 @@ void CremoteControlClientDlg::OnBnClickedButtonFileinfo()
 			fileTree.InsertItem((dir + ":").c_str(), TVI_ROOT, TVI_LAST);
 		}
 	}
-	pController->closeConnect();
 }
-// 1、查看磁盘分区
-// 2、查看指定目录下的文件
-// 3、打开文件
-// 4、下载文件
-// 5、鼠标操作
-// 6、发送屏幕内容
-// 7、锁机
-// 8、解锁
-//向被控制端发包
 
 
 
@@ -304,66 +288,56 @@ void CremoteControlClientDlg::DeleteTreeChildrenItem(HTREEITEM hTree)
 }
 
 
-////文件传输的提示线程
-//void CremoteControlClientDlg::threadEntryForDownFile(void* arg)
+//
+//void CremoteControlClientDlg::threadEntryForWatchData(void* arg)
 //{
 //	CremoteControlClientDlg* thiz = (CremoteControlClientDlg*)arg;
-//	thiz->threadDownFile();
+//	thiz->threadWatchData();
+//	//清空残留的屏幕数据
+//	AfxMessageBox("线程退出");
 //	_endthread();
 //}
-
-void CremoteControlClientDlg::threadEntryForWatchData(void* arg)
-{
-	CremoteControlClientDlg* thiz = (CremoteControlClientDlg*)arg;
-	thiz->threadWatchData();
-	//清空残留的屏幕数据
-	AfxMessageBox("线程退出");
-	_endthread();
-}
-
-void CremoteControlClientDlg::threadWatchData()
-{
-	CController* pController = CController::getInstance();
-	Sleep(50);
-	CClientSocket* pClient = NULL;
-	do {
-		pClient = CClientSocket::getClientSocketInstance();
-	} while (pClient == NULL);
-
-	for (;;)
-	{
-		//监视窗口关闭了直接结束这个函数
-		if (pClient->ifWathClose())
-		{
-			updateImgScreenStatus();
-			break;
-		}
-		if (!isImgValid)
-		{
-			int ret = pController->sendCommandPacket(6);
-			if (ret == 0)
-			{
-				int cmd = pClient->DealCommand();
-				if (cmd == 6)
-				{
-					TRACE("接收到一张屏幕截图\r\n");
-					std::string strBuffer = pClient->GetPacket().strData;
-					if (Utils::GetImage(screenImg, strBuffer) == 0)
-						isImgValid = true;
-					else
-						continue;
-				}
-
-			}
-			pClient->close();
-			Sleep(20);
-		}
-		else
-		{
-			Sleep(1);
-		}
-	}
-}
+//
+//void CremoteControlClientDlg::threadWatchData()
+//{
+//	CController* pController = CController::getInstance();
+//	Sleep(50);
+//	CClientSocket* pClient = NULL;
+//	do {
+//		pClient = CClientSocket::getClientSocketInstance();
+//	} while (pClient == NULL);
+//
+//	for (;;)
+//	{
+//		//监视窗口关闭了直接结束这个函数
+//		if (pClient->ifWathClose())
+//		{
+//			updateImgScreenStatus();
+//			break;
+//		}
+//		if (!isImgValid)
+//		{
+//			std::list<CPacket>resultPacketList;
+//
+//			int ret = pController->sendCommandPacket(resultPacketList, 6);
+//			if (ret)
+//			{
+//					TRACE("接收到一张屏幕截图\r\n");
+//					std::string strBuffer = pClient->GetPacket().strData;
+//					if (Utils::GetImage(screenImg, strBuffer) == 0)
+//						isImgValid = true;
+//					else
+//						continue;
+//
+//			}
+//			Sleep(20);
+//		}
+//		else
+//		{
+//			Sleep(1);
+//		}
+//	}
+//}
 
 
 
@@ -403,8 +377,8 @@ void CremoteControlClientDlg::openFile()
 	CString dirPath = getPath(hSelected);
 	CString filePath = dirPath + FileName;
 	//发送打开文件命令
-	pController->sendCommandPacket(3, (BYTE*)filePath.GetString(), filePath.GetLength());
-	pController->closeConnect();
+	std::list<CPacket>resultPacketList;
+	pController->sendCommandPacket(false,resultPacketList,3, (BYTE*)filePath.GetString(), filePath.GetLength());
 }
 
 
@@ -440,8 +414,9 @@ void CremoteControlClientDlg::deleteFile()
 	CString dirPath = getPath(hSelected);
 	CString filePath = dirPath + FileName;
 	//发送删除文件命令
-	pController->sendCommandPacket(9, (BYTE*)filePath.GetString(), filePath.GetLength());
-	pController->closeConnect();
+	std::list<CPacket>resultList;
+	pController->sendCommandPacket(false,resultList,9, (BYTE*)filePath.GetString(), filePath.GetLength());
+	//pController->closeConnect();
 	file_list.DeleteAllItems();
 	HTREEITEM hTreeSelected = fileTree.GetSelectedItem();
 	//这两个是一样的

@@ -53,8 +53,8 @@ public:
 	afx_msg void OnNMDblclkTreeDir(NMHDR* pNMHDR, LRESULT* pResult);
 	CString getPath(HTREEITEM hTree);
 	void DeleteTreeChildrenItem(HTREEITEM hTree);//删除指定项的子项
-	static void threadEntryForWatchData(void* arg);
-	void threadWatchData();
+	//static void threadEntryForWatchData(void* arg);
+	//void threadWatchData();
 	CListCtrl file_list;
 	// 目录树
 	CTreeCtrl fileTree;

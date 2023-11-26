@@ -48,7 +48,7 @@ END_MESSAGE_MAP()
 // CScreenDialog 消息处理程序
 
 
-CPoint CScreenDialog::UserPointToScreenPoint( CPoint& point)
+CPoint CScreenDialog::UserPointToScreenPoint(CPoint& point)
 {
 	//屏幕坐标转为客户区坐标
 	//ScreenToClient(&point);
@@ -59,9 +59,9 @@ CPoint CScreenDialog::UserPointToScreenPoint( CPoint& point)
 	float height = rect.Height();
 	int rwidth = 1920;
 	int rheight = 1080;
-	int x = point.x * rwidth/ width;
+	int x = point.x * rwidth / width;
 	int y = point.y * rheight / height;
-	return CPoint(x,y);
+	return CPoint(x, y);
 }
 
 BOOL CScreenDialog::OnInitDialog()
@@ -69,7 +69,7 @@ BOOL CScreenDialog::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	SetTimer(0, 50, NULL);
+	SetTimer(0, 25, NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -86,7 +86,6 @@ void CScreenDialog::OnTimer(UINT_PTR nIDEvent)
 			CRect rect;
 			screenEdit.GetWindowRect(rect);
 			//拿出屏幕数据并显示出来
-			//pParent->getScreenImg().BitBlt(screenEdit.GetDC()->GetSafeHdc(), 0, 0, SRCCOPY);
 			pController->screenImg.StretchBlt(screenEdit.GetDC()->GetSafeHdc(), 0, 0, rect.Width(), rect.Height(), SRCCOPY);
 			pController->m_mainDlg.InvalidateRect(NULL);//通知重绘
 			pController->screenImg.Destroy();
@@ -105,7 +104,8 @@ void CScreenDialog::OnLButtonDown(UINT nFlags, CPoint point)
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 2;//按下
-	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	std::list<CPacket>list;
+	CController::getInstance()->sendCommandPacket(false,list,5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnLButtonDown(nFlags, point);
 }
 
@@ -119,7 +119,8 @@ void CScreenDialog::OnLButtonUp(UINT nFlags, CPoint point)
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 3;//双击
-	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	std::list<CPacket>list;
+	CController::getInstance()->sendCommandPacket(false,list, 5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnLButtonUp(nFlags, point);
 }
 
@@ -132,7 +133,9 @@ void CScreenDialog::OnRButtonDown(UINT nFlags, CPoint point)
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 2;//按下
-	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	std::list<CPacket>list;
+
+	CController::getInstance()->sendCommandPacket(false, list, 5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnRButtonDown(nFlags, point);
 }
 
@@ -146,7 +149,9 @@ void CScreenDialog::OnRButtonUp(UINT nFlags, CPoint point)
 	event.nButton = 0;//左键
 	event.nAction = 3;//弹起
 	//这里可能有一个bug就是套接字可能是无效的
-	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	std::list<CPacket>list;
+
+	CController::getInstance()->sendCommandPacket(false,list, 5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnRButtonUp(nFlags, point);
 }
 
@@ -159,7 +164,9 @@ void CScreenDialog::OnLButtonDblClk(UINT nFlags, CPoint point)
 	event.nButton = 0;//左键
 	event.nAction = 1;//双击
 	//这里可能有一个bug就是套接字可能是无效的
-	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	std::list<CPacket>list;
+
+	CController::getInstance()->sendCommandPacket(false,list, 5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnLButtonDblClk(nFlags, point);
 }
 
@@ -173,7 +180,9 @@ void CScreenDialog::OnRButtonDblClk(UINT nFlags, CPoint point)
 	event.nButton = 2;//右键
 	event.nAction = 1;//双击
 	//这里可能有一个bug就是套接字可能是无效的
-	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	std::list<CPacket>list;
+
+	CController::getInstance()->sendCommandPacket(false,list, 5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnRButtonDblClk(nFlags, point);
 }
 
@@ -187,7 +196,9 @@ void CScreenDialog::OnMouseMove(UINT nFlags, CPoint point)
 	event.nButton = 8;
 	event.nAction = 0;
 	//这里可能有一个bug就是套接字可能是无效的
-	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	std::list<CPacket>list;
+
+	CController::getInstance()->sendCommandPacket(false,list, 5, (BYTE*)&event, sizeof(event));
 	CDialogEx::OnMouseMove(nFlags, point);
 }
 
@@ -202,7 +213,8 @@ void CScreenDialog::OnStnClickedScreen()
 	event.ptXY = remotePoint;
 	event.nButton = 0;//左键
 	event.nAction = 0;//单击
-	CController::getInstance()->sendCommandPacket(5, (BYTE*)&event, sizeof(event));
+	std::list<CPacket>list;
+	CController::getInstance()->sendCommandPacket(false,list, 5, (BYTE*)&event, sizeof(event));
 }
 
 
