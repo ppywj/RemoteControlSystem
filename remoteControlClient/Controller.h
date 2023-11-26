@@ -21,11 +21,14 @@ class CController
 private:
 
 	static CController* m_instance;
-	
+	bool ifStartSendAndRcvThread = false;  //是否开启了收发线程
 	HANDLE m_thread;
 	unsigned int m_threadId;
 	map<int, MSGFUNC>m_msgFuncMap;
 	CString m_filePath;
+	FILE* m_pDownLoadFile=NULL;
+	mutex downLoadMutex;
+
 public:
 	CStatusDlg m_statusDlg;
 	CScreenDialog m_screenDlg;
@@ -53,18 +56,9 @@ public:
 	//像线程发送消息
 	LRESULT SendMessageToThread(MSG msg);
 	//获取全局唯一对象
-	static CController* getInstance()
-	{
-		if (m_instance == nullptr)
-			m_instance = new CController();
-		return m_instance;
-	}
+	static CController* getInstance();
 	//销毁全局对象
-	static void releaseInstance() {
-		if (m_instance != nullptr)
-			delete m_instance;
-		m_instance = nullptr;
-	}
+	static void releaseInstance();
 	//发包
 	int sendCommandPacket(bool ifrecv,std::list<CPacket>& resultPackList,WORD cmd, BYTE* data = nullptr, size_t size = 0,bool ifMutiple = false);
 	//收包
@@ -81,8 +75,10 @@ public:
 	void loadDirectory(CString filePath, CListCtrl& file_list, CTreeCtrl&fileTree, HTREEITEM&hSelected);
 	//下载文件
 	void downLoadFile(CString filePath,CController*controller);
+
+
 private:
-	bool ifStartSendAndRcvThread = false;
+	void downLoadFileFunc();
 	CController();
 	~CController();
 	void setFilePath(const CString& path);

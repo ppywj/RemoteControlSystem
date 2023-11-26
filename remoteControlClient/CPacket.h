@@ -2,6 +2,14 @@
 #include"pch.h"
 #include"framework.h"
 #include<string>
+
+
+enum {
+	FILEEMPTY=1000,
+	LOADSIZELOWER=1001,
+	LOADSUCCESS=1002
+};
+
 typedef struct file_info {
 	file_info() {
 		IsValid = 1;

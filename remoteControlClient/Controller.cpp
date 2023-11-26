@@ -110,12 +110,19 @@ void CController::downLoadFile(CString filePath, CController* controller)
 
 void CController::downLoadFileThread(void* arg)
 {
-	bool isClose = false;
 	CController* pController = (CController*)arg;
+	pController->downLoadFileFunc();
+	_endthread();
+}
+
+void CController::downLoadFileFunc()
+{
+	downLoadMutex.lock();//不能同时下载多个文件
+	bool isClose = false;
 	FILE* pFile = nullptr;
 	CString localPath;
 	//弹出文件对话框    隐藏只读属性的文件 和如果文件重名弹出覆盖提示框
-	CFileDialog fileDlg(TRUE, "*", pController->getFilePath(), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL, &pController->m_mainDlg);
+	CFileDialog fileDlg(TRUE, "*", m_filePath, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, NULL, &m_mainDlg);
 	//模态方式弹出文件对话框
 	long long loadedSize = 0;//下载完成的大小
 	long long fileSize = 0;
@@ -124,71 +131,55 @@ void CController::downLoadFileThread(void* arg)
 		localPath = fileDlg.GetPathName();
 		pFile = fopen(localPath, "wb+");
 		if (pFile == NULL) {
-			MessageBox(pController->m_mainDlg, "本地没有权限保存该文件或者文件无法创建!!!", "downLoad error", MB_OK);
-			//pController->closeConnect();
-			//这里有待优化 应该向服务端发送一个命令通知服务端不用发送文件数据了
+			MessageBox(m_mainDlg, "本地没有权限保存该文件或者文件无法创建!!!", "downLoad error", MB_OK);
+			downLoadMutex.unlock();
 			return;
 		}
-		TRACE("\r\n下载:%s\r\n", pController->getFilePath());
-		pController->m_statusDlg.info_edit.SetWindowText("文件下载命令正在执行中");
-		pController->m_statusDlg.ShowWindow(SW_SHOW);
-		pController->m_statusDlg.CenterWindow(&pController->m_mainDlg);
-		pController->m_statusDlg.SetActiveWindow();
+		m_pDownLoadFile = pFile;
+		CClientSocket::getClientSocketInstance()->setDownLoadFilePath(m_filePath, pFile);
+		TRACE("\r\n下载:%s\r\n", m_filePath);
+		m_statusDlg.info_edit.SetWindowText("文件下载命令正在执行中");
+		m_statusDlg.ShowWindow(SW_SHOW);
+		m_statusDlg.CenterWindow(&m_mainDlg);
+		m_statusDlg.SetActiveWindow();
 		list<CPacket>resultPacketList;
-		int ret = pController->sendCommandPacket(true, resultPacketList, 4, (BYTE*)pController->getFilePath().GetString(), pController->getFilePath().GetLength(), true);
-		CPacket sizePacket = resultPacketList.front();
-		resultPacketList.pop_front();
-		//获取长度
-		fileSize = *(long long*)(sizePacket.strData.c_str());
-		if (fileSize == 0)
-		{
-			pController->m_statusDlg.ShowWindow(SW_HIDE);
-			MessageBox(pController->m_mainDlg, "文件为空或由于权限不足等原因无法读取文件", "downLoad error", MB_OK);
-			fclose(pFile);
-			return;
-		}
+		int ret=sendCommandPacket(true, resultPacketList, 4, (BYTE*)m_filePath.GetString(), m_filePath.GetLength(), true);
 		if (!ret)
 		{
-			pController->m_statusDlg.ShowWindow(SW_HIDE);
+			m_statusDlg.ShowWindow(SW_HIDE);
 			AfxMessageBox("文件下载命令执行失败", MB_TOPMOST);
 			fclose(pFile);
-
+			downLoadMutex.unlock();
 			return;
 		}
-		if (resultPacketList.empty())
+		if (resultPacketList.empty()||resultPacketList.front().sCmd==FILEEMPTY)
 		{
-			pController->m_statusDlg.ShowWindow(SW_HIDE);
-			AfxMessageBox("文件下载命令执行失败", MB_TOPMOST);
+			m_statusDlg.ShowWindow(SW_HIDE);
+			AfxMessageBox("文件为空或者由于权限不足等原因下载失败", MB_TOPMOST);
 			fclose(pFile);
+			downLoadMutex.unlock();
 			return;
 		}
-		while (!resultPacketList.empty())
+		if (resultPacketList.front().sCmd == LOADSIZELOWER)
 		{
-			CPacket pack = resultPacketList.front();
-			resultPacketList.pop_front();
-			fwrite((pack.strData.c_str()), 1, (pack.strData.size()), pFile);
-			loadedSize += pack.strData.size();
+			isClose = true;
+			m_statusDlg.ShowWindow(SW_HIDE);
+			MessageBox(NULL, "文件下载未完成，请检查错误", "downLoad error", MB_OK);
+		}
+		else if(resultPacketList.front().sCmd ==LOADSUCCESS)
+		{
+			isClose = true;
+			m_statusDlg.ShowWindow(SW_HIDE);
+			// 获取当前活动窗口的句柄
+			MessageBox(m_mainDlg, m_filePath + "下载完成+储存在:" + localPath, "", MB_OK);
 		}
 	}
 	if (pFile != NULL)
 		fclose(pFile);
 	if (!isClose) {
-		pController->m_statusDlg.ShowWindow(SW_HIDE);
+		m_statusDlg.ShowWindow(SW_HIDE);
 	}
-	if (loadedSize < fileSize)
-	{
-		isClose = true;
-		pController->m_statusDlg.ShowWindow(SW_HIDE);
-		MessageBox(NULL, "文件下载未完成，请检查错误", "downLoad error", MB_OK);
-	}
-	else
-	{
-		isClose = true;
-		pController->m_statusDlg.ShowWindow(SW_HIDE);
-		// 获取当前活动窗口的句柄
-		MessageBox(pController->m_mainDlg, pController->getFilePath() + "下载完成+储存在:" + localPath, "", MB_OK);
-	}
-	_endthread();
+	downLoadMutex.unlock();
 }
 
 CController::CController() :
@@ -196,21 +187,7 @@ CController::CController() :
 	m_thread(INVALID_HANDLE_VALUE),
 	m_threadId(-1)
 {
-	struct {
-		int nMsg;
-		MSGFUNC func;
-	}msgFuncArr[] = {
-		{WM_SEND_PACK,&CController::OnSendPack},
-		{WM_SEND_DATA,&CController::OnSendData},
-		{WM_SHOW_STATUS,&CController::OnShowStatus},
-		{WM_WATCH_SCREEN,&CController::OnWatchScreen},
-		{0,NULL}
-	};
-	for (int i = 0; msgFuncArr[i].func != NULL; i++)
-	{
-		m_msgFuncMap.insert(std::make_pair(msgFuncArr[i].nMsg, msgFuncArr[i].func));
-	}
-
+	
 }
 
 CController::~CController()
@@ -223,6 +200,7 @@ CController::~CController()
 void CController::setFilePath(const CString& path)
 {
 	m_filePath = path;
+
 }
 
 const CString CController::getFilePath()
@@ -309,13 +287,7 @@ int CController::Invoke(CWnd*& pMainWnd)
 //发送包
 void CController::OnSendPack(UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
-	CController* pClient = CController::getInstance();
-	if (pClient == NULL)
-		return;
-	if (!pClient->initSocket()) {
-		return;
-	}
-	pClient->closeConnect();
+
 }
 
 //发送数据
@@ -390,4 +362,18 @@ LRESULT CController::SendMessageToThread(MSG msg)
 	PostThreadMessage(m_threadId, WM_SEND_MESSAGE, (WPARAM)&msgInfo, (LPARAM)hEvent);
 	WaitForSingleObject(hEvent, -1);//无限制等待
 	return msgInfo.result;
+}
+
+CController* CController::getInstance()
+{
+	if (m_instance == nullptr)
+		m_instance = new CController();
+	return m_instance;
+}
+
+void CController::releaseInstance()
+{
+	if (m_instance != nullptr)
+		delete m_instance;
+	m_instance = nullptr;
 }
